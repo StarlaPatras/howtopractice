@@ -3,11 +3,10 @@ import { MdCancel } from "react-icons/md";
 import { CiStar } from "react-icons/ci";
 import { IoMdArrowDropright } from "react-icons/io";
 
-export default function Sidebar() {
-  const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
+export default function Sidebar({ isOpen, onClose }) {
   const [expanded, setExpanded] = useState(false);
 
-  if (!sidebarIsOpen) return null;
+  if (!isOpen) return null;
 
   return (
     <div
@@ -26,7 +25,7 @@ export default function Sidebar() {
           if (expanded) {
             setExpanded(false);
           } else {
-            setSidebarIsOpen(false);
+            onClose();
           }
         }}
       >
