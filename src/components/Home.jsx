@@ -17,8 +17,8 @@ const Home = () => {
   const [isChat, setIsChat] = useState(false);
   const [sidebarOpen, setSidebarIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [codeDropDown, setCodeDropdown] = useState(false);
-  const [beginnerDropDown, setBeginnerDropdown] = useState(false);
+  const [messages, setMessages] = useState([]);
+
   const fileInputRef = useRef(null);
 
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -31,6 +31,47 @@ const Home = () => {
   const handleFileChange = (e) => {
     console.log("Selected files:", e.target.files); // do something with files
   };
+
+  const handleSend = () => {
+    if (!inputValue.trim()) return;
+
+    // add user message
+    setMessages((prev) => [...prev, { role: "user", content: inputValue }]);
+
+    // open chat window
+    setSidebarIsOpen(true);
+    setIsChat(true);
+
+    // call API for assistant response
+    fetch("/api/chat", {
+      method: "POST",
+      body: JSON.stringify({ message: inputValue }),
+    }).then(async (res) => {
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let streamedContent = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        streamedContent += decoder.decode(value);
+
+        setMessages((prev) => {
+          const updated = [...prev];
+          // replace last assistant message or push a new one
+          if (updated[updated.length - 1]?.role === "assistant") {
+            updated[updated.length - 1].content = streamedContent;
+          } else {
+            updated.push({ role: "assistant", content: streamedContent });
+          }
+          return updated;
+        });
+      }
+    });
+
+    setInputValue(""); // clear input
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -130,7 +171,7 @@ const Home = () => {
             {isChat ? (
               <>
                 <div className="max-w-[900px] mx-auto   h-[700px] overflow-y-auto pb-20">
-                  <Chat initialMessage={inputValue} />
+                  <Chat messages={messages} />
                 </div>
               </>
             ) : (
@@ -257,22 +298,14 @@ const Home = () => {
           }`}
         >
           <div className="flex items-center gap-3 rounded-2xl border border-gray-200 shadow-lg px-4 py-3">
-            {/* Input */}
             <input
               type="text"
-              placeholder="Ask me anything"
-              className="flex-1 border-none outline-none text-gray-700"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
+              className="flex-1 border-none outline-none text-gray-700"
             />
-            {/* Button */}
             <button
-              onClick={() => {
-                if (!inputValue.trim()) return; // prevent empty
-
-                setSidebarIsOpen(true);
-                setIsChat(true);
-              }}
+              onClick={handleSend}
               disabled={!inputValue.trim()}
               className={`rounded-xl px-4 py-1 text-sm 
     ${
