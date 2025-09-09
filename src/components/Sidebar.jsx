@@ -39,7 +39,7 @@ export default function Sidebar({ isOpen, onClose }) {
           <p className="font-aspire text-gray-600 mb-2">Part Search</p>
           <input
             placeholder="search"
-            className="w-full border mb-5 border-gray-300 text-base p-1 rounded-md"
+            className="w-full placeholder:text-gray-400 border mb-5 border-gray-300 text-base p-1 rounded-md"
           />
           <p className="font-aspire leading-3 mb-2 text-gray-600 text-sm">
             Question 1:

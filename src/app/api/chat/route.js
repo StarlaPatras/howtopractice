@@ -10,7 +10,7 @@ export async function POST(req) {
   });
 
   const response = await openai.chat.completions.create({
-    model: "gpt-4o-mini", // ✅ cheap + fast
+    model: "gpt-4o-mini",
     messages: [{ role: "user", content: message }],
     stream: true,
   });

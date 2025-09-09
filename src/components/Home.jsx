@@ -87,7 +87,7 @@ const Home = () => {
   return (
     <div className="flex min-h-screen w-full">
       {/* Sidebar */}
-      <aside className="relative w-[320px]  shadow-[6px_0_12px_-4px_rgba(0,0,0,0.15)] flex flex-col pt-4">
+      <aside className="relative z-10 w-[320px] bg-gray-50 shadow-[6px_0_12px_-4px_rgba(0,0,0,0.12)] flex flex-col pt-4">
         {/* Logo */}
         <div className="px-6">
           <img
@@ -98,13 +98,13 @@ const Home = () => {
         </div>
 
         {/* Vehicle Info */}
-        <div className="flex flex-col items-center mt-6">
+        <div className="flex  flex-col items-center mt-6">
           <img
             src="https://dvwz1pyggbvkv.cloudfront.net/51014/51014_cc0640_032_PW4.png"
             alt="Car"
             className="w-[180px] object-cover"
           />
-          <p className="mt-2 text-center font-aspire text-sm font-medium">
+          <p className="mt-2 text-center text-gray-800 font-aspire text-sm font-medium">
             2024 Alfa Romeo Stelvio
           </p>
           <p className="text-xs font-aspire text-gray-400">2.0L 4 cyl</p>
@@ -122,11 +122,14 @@ const Home = () => {
         </nav>
 
         {/* Footer */}
-        <div className="absolute bottom-5 w-full text-center text-sm">
+        <div className="absolute bottom-5 w-full text-gray-800 text-center text-sm">
           <p>
-            Make Money <span className="font-semibold block">With HowTo</span>
+            Make Money{" "}
+            <span className="font-semibold text-gray-800 block">
+              With HowTo
+            </span>
           </p>
-          <button className="mt-2 rounded-md bg-white px-3 py-1 text-xs text-red-600 hover:bg-gray-100">
+          <button className="mt-2 rounded-md bg-white  px-3 py-1 text-xs text-red-600 hover:bg-gray-100">
             Learn More
           </button>
         </div>
